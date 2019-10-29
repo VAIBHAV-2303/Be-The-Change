@@ -89,6 +89,8 @@
 	function update ()
 	{
 		console.log(this.cameras.main.x, this.cameras.main.y);
+		console.log(player.x, player.y, "asdhajsd");
+
 		if (cursors.right.isDown)
 		{	
 			this.cameras.main.x -= speed;
@@ -117,14 +119,29 @@
 		{
 			player.anims.play('turn');
 		}
-		if(this.cameras.main.x > 2)
-			this.cameras.main.x = 2;
+		if(this.cameras.main.x > -2)
+			this.cameras.main.x = -2;
+
 		if(this.cameras.main.x < -700)
 			this.cameras.main.x = -700;
+
 		if(this.cameras.main.y > 4)
 			this.cameras.main.y = 4;
+
 		if(this.cameras.main.y < -1330)
 			this.cameras.main.y = -1330;
+
+		if(player.x < 600)
+			player.x = 600;
+
+		if(player.y < 350)
+			player.y = 350;
+
+		if(player.x > 1400)
+			player.x = 1400;
+
+		if(player.y > 1600)
+			player.y = 1600;
 	}
 
 </script>
