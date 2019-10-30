@@ -60,40 +60,40 @@
 		bad_ground.create(1000, 1000, 'bad_ground');
 		
 		bad_building = this.physics.add.staticGroup({
-        	key: 'bad_building',
-        	repeat: 11,
-        	setXY: { x: 1200, y: 1000, stepX: 200 , stepY: 200}
-    	});
+        		key: 'bad_building',
+        		repeat: 11,
+        		setXY: { x: 1200, y: 1000, stepX: 200 , stepY: 200}
+    		});
 
-    	bad_building2 = this.physics.add.staticGroup({
-        	key: 'bad_building2',
-        	repeat: 11,
-        	setXY: { x: 1000, y: 1000, stepX: 200 , stepY: 200}
-    	});
+		bad_building2 = this.physics.add.staticGroup({
+			key: 'bad_building2',
+			repeat: 11,
+			setXY: { x: 1000, y: 1000, stepX: 200 , stepY: 200}
+		});
 
-    	bad_tree = this.physics.add.staticGroup({
-        	key: 'bad_tree',
-        	repeat: 11,
-        	setXY: { x: 1000, y: 1000, stepX: 200 , stepY: 200}
-    	});
+		bad_tree = this.physics.add.staticGroup({
+			key: 'bad_tree',
+			repeat: 11,
+			setXY: { x: 1000, y: 1000, stepX: 200 , stepY: 200}
+		});
 
-    	bad_home = this.physics.add.staticGroup({
-        	key: 'bad_home',
-        	repeat: 11,
-        	setXY: { x: 1000, y: 1000, stepX: 200 , stepY: 200}
-    	});
+		bad_home = this.physics.add.staticGroup({
+			key: 'bad_home',
+			repeat: 11,
+			setXY: { x: 1000, y: 1000, stepX: 200 , stepY: 200}
+		});
 
-    	bad_park = this.physics.add.staticGroup({
-        	key: 'bad_park',
-        	repeat: 11,
-        	setXY: { x: 1000, y: 1000, stepX: 200 , stepY: 200}
-    	});
+		bad_park = this.physics.add.staticGroup({
+			key: 'bad_park',
+			repeat: 11,
+			setXY: { x: 1000, y: 1000, stepX: 200 , stepY: 200}
+		});
 
-    	bad_pool = this.physics.add.staticGroup({
-        	key: 'bad_pool',
-        	repeat: 11,
-        	setXY: { x: 1000, y: 1000, stepX: 200 , stepY: 200}
-    	});
+		bad_pool = this.physics.add.staticGroup({
+			key: 'bad_pool',
+			repeat: 11,
+			setXY: { x: 1000, y: 1000, stepX: 200 , stepY: 200}
+		});
 
 		player = this.physics.add.sprite(1000, 800, 'dude');
 		player.setBounce(0.2);
@@ -150,7 +150,7 @@
 		// Defining player movement functions
 		if (cursors.right.isDown)
 		{	
-            player.setVelocityX(speed);
+	            	player.setVelocityX(speed);
 			player.setVelocityY(0);
 			player.anims.play('right', true);
 		}
@@ -162,13 +162,13 @@
 		}
 		else if(cursors.up.isDown)
 		{
-            player.setVelocityY(-speed);
+            		player.setVelocityY(-speed);
 			player.setVelocityX(0);
 			player.anims.play('up', true);
 		}
 		else if(cursors.down.isDown)
 		{
-            player.setVelocityY(speed);
+            		player.setVelocityY(speed);
 			player.setVelocityX(0);
 			player.anims.play('down', true);	
 		}
