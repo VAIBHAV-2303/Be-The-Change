@@ -1,7 +1,12 @@
 import {Scene} from "phaser"
 
-class pastWorld extends Scene{
+class presentWorld extends Scene{
 	
+	constructor(){
+		super('present');
+		this.speed = 160;
+	}
+
 	preload ()
 	{
 		this.load.image('bad_ground', 'assets/bad_ground.jpg');
@@ -44,7 +49,7 @@ class pastWorld extends Scene{
 		 Everyone is in their homes and there is a \n general lack of freedom. \
 		 Lila \nis not happy with the current situation and she \n wishes to change it and \
 		 hence she goes out exploring the world.\n', { fontSize: '32px', fill: '#0D3107' });
-		setTimeout(() => {this.storyText.setText('');}, 10000);
+		setTimeout(() => {this.storyText.visible = false;}, 10000);
 	}
 
 	createGround(){
@@ -58,40 +63,35 @@ class pastWorld extends Scene{
 	}
 
 	createObjects(){
-		Y = [400, 1200, 800, 2000, 1600, 0];
+		this.Y = [400, 1200, 800, 2000, 1600, 0];
 		this.bad_building = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_building.create(i*400, Y[i], 'bad_building');
+			this.bad_building.create(i*400, this.Y[i], 'bad_building');
 		}
-
-		Y = [1200, 400, 2000, 800, 0, 1600];
+		this.Y = [1200, 400, 2000, 800, 0, 1600];
 		this.bad_building2 = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_building2.create(i*400, Y[i], 'bad_building2');
+			this.bad_building2.create(i*400, this.Y[i], 'bad_building2');
 		}
-
-		Y = [1600, 2000, 1200, 0, 800, 400];
+		this.Y = [1600, 2000, 1200, 0, 800, 400];
 		this.bad_tree = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_tree.create(i*400, Y[i], 'bad_tree');
+			this.bad_tree.create(i*400, this.Y[i], 'bad_tree');
 		}
-
-		Y = [800, 0, 1600, 400, 2000];
+		this.Y = [800, 0, 1600, 400, 2000];
 		this.bad_home = this.physics.add.staticGroup();
 		for(var i=0;i<5;i++){
-			this.bad_home.create(i*400, Y[i], 'bad_home');
+			this.bad_home.create(i*400, this.Y[i], 'bad_home');
 		}
-
-		Y = [0, 800, 400, 1600, 2000, 1200];
+		this.Y = [0, 800, 400, 1600, 2000, 1200];
 		this.bad_park = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_park.create(i*400, Y[i], 'bad_park');
+			this.bad_park.create(i*400, this.Y[i], 'bad_park');
 		}
-
-		Y = [2000, 1600, 0, 1200, 400, 800];
+		this.Y = [2000, 1600, 0, 1200, 400, 800];
 		this.bad_pool = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_pool.create(i*400, Y[i], 'bad_pool');
+			this.bad_pool.create(i*400, this.Y[i], 'bad_pool');
 		}
 	}
 
@@ -132,40 +132,29 @@ class pastWorld extends Scene{
 		});
 	}
 
-	update()
-	{
-		// storyText.setText('');
+	update(){
 		// Defining player movement functions
-		if (this.cursors.right.isDown)
-		{	
-			this.player.setVelocityX(speed);
+		if (this.cursors.right.isDown){	
+			this.player.setVelocityX(this.speed);
 			this.player.setVelocityY(0);
 			this.player.anims.play('right', true);
-		}
-		else if(this.cursors.left.isDown)
-		{
-			this.player.setVelocityX(-speed);
+		}else if(this.cursors.left.isDown){
+			this.player.setVelocityX(-this.speed);
 			this.player.setVelocityY(0);
 			this.player.anims.play('left', true);
-		}
-		else if(this.cursors.up.isDown)
-		{
-			this.player.setVelocityY(-speed);
+		}else if(this.cursors.up.isDown){
+			this.player.setVelocityY(-this.speed);
 			this.player.setVelocityX(0);
 			this.player.anims.play('up', true);
-		}
-		else if(this.cursors.down.isDown)
-		{
-			this.player.setVelocityY(speed);
+		}else if(this.cursors.down.isDown){
+			this.player.setVelocityY(this.speed);
 			this.player.setVelocityX(0);
 			this.player.anims.play('down', true);	
-		}
-		else
-		{
+		}else{
 			this.player.setVelocityX(0);
 			this.player.setVelocityY(0);
 			this.player.anims.play('turn');
 		}
 	}
 }
-export default pastWorld
+export default presentWorld

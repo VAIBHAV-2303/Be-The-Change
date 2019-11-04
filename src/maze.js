@@ -1,6 +1,11 @@
 import {Scene} from "phaser"
 
-class pastWorld extends Scene{
+class maze extends Scene{
+
+    constructor(){
+        super('maze');
+    }
+
     preload ()
     {
         this.load.image('floor', 'assets/floor.png');

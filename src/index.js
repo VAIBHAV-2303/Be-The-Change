@@ -1,15 +1,22 @@
 import 'phaser';
-import pastWorld from "./pastWorld"
+import presentWorld from "./presentWorld"
+import maze from "./maze"
 
 var config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 800,
-    height: 600,
-    scene: {
+    width: 2000,
+    height: 2000,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: false
+        }
+    },
+    scene: [{
         preload: preload,
         create: create
-    }
+    }, presentWorld, maze],
 };
 
 var game = new Phaser.Game(config);
@@ -23,8 +30,7 @@ function create ()
 {
     var logo = this.add.image(400, 150, 'logo');
     this.input.on('pointerdown', () => {
-        // Start the real game with scene change
-        
+        this.scene.start('present');
     })
     this.tweens.add({
         targets: logo,
