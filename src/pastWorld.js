@@ -1,22 +1,22 @@
 import {Scene} from "phaser"
 
-class presentWorld extends Scene{
+class pastWorld extends Scene{
 	
 	constructor(){
-		super('present');
+		super('past');
 		this.speed = 250;
 	}
 
 	preload ()
 	{
-		this.load.image('bad_ground', 'assets/bad_ground.jpg');
+		this.load.image('good_ground', 'assets/good_ground.jpg');
 		this.load.image('museum', 'assets/museum.png');
-		this.load.image("bad_building", "assets/bad_building.png");
-		this.load.image("bad_building2", "assets/bad_building2.png");
-		this.load.image("bad_home", "assets/bad_home.png");
-		this.load.image("bad_park", "assets/bad_park.png");
-		this.load.image("bad_pool", "assets/bad_pool.png");
-		this.load.image("bad_tree", "assets/bad_tree.png");
+		this.load.image("good_building", "assets/good_building.png");
+		this.load.image("good_building2", "assets/good_building2.png");
+		this.load.image("good_home", "assets/good_home.png");
+		this.load.image("good_park", "assets/good_park.png");
+		this.load.image("good_pool", "assets/good_pool.png");
+		this.load.image("good_tree", "assets/good_tree.png");
 		this.load.spritesheet('lila', 'assets/lila.png', { frameWidth: 64, frameHeight: 64});
 	}
 
@@ -35,13 +35,12 @@ class presentWorld extends Scene{
 		this.cursors = this.input.keyboard.createCursorKeys();
 
 		// Adding colliders
-		this.physics.add.collider(this.player, this.bad_building);
-		this.physics.add.collider(this.player, this.bad_building2);
-		this.physics.add.collider(this.player, this.bad_tree);
-		this.physics.add.collider(this.player, this.bad_home);
-		this.physics.add.collider(this.player, this.bad_park);
-		this.physics.add.collider(this.player, this.bad_pool);
-    	this.physics.add.overlap(this.player, this.museum, this.pastWorld, null, this);
+		this.physics.add.collider(this.player, this.good_building);
+		this.physics.add.collider(this.player, this.good_building2);
+		this.physics.add.collider(this.player, this.good_tree);
+		this.physics.add.collider(this.player, this.good_home);
+		this.physics.add.collider(this.player, this.good_park);
+		this.physics.add.collider(this.player, this.good_pool);
 
 		// Initial narrative text
 		this.storyText = this.add.text(100, 500, 'Lila fears the world will no longer be green.\
@@ -53,8 +52,8 @@ class presentWorld extends Scene{
 	}
 
 	createGround(){
-		this.bad_ground = this.physics.add.staticGroup();
-		this.bad_ground.create(1000, 1000, 'bad_ground');
+		this.good_ground = this.physics.add.staticGroup();
+		this.good_ground.create(1000, 1000, 'good_ground');
 	}
 
 	createMuseum(){
@@ -64,34 +63,34 @@ class presentWorld extends Scene{
 
 	createObjects(){
 		this.Y = [400, 1200, 800, 2000, 1600, 0];
-		this.bad_building = this.physics.add.staticGroup();
+		this.good_building = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_building.create(i*400, this.Y[i], 'bad_building');
+			this.good_building.create(i*400, this.Y[i], 'good_building');
 		}
 		this.Y = [1200, 400, 2000, 800, 0, 1600];
-		this.bad_building2 = this.physics.add.staticGroup();
+		this.good_building2 = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_building2.create(i*400, this.Y[i], 'bad_building2');
+			this.good_building2.create(i*400, this.Y[i], 'good_building2');
 		}
 		this.Y = [1600, 2000, 1200, 0, 800, 400];
-		this.bad_tree = this.physics.add.staticGroup();
+		this.good_tree = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_tree.create(i*400, this.Y[i], 'bad_tree');
+			this.good_tree.create(i*400, this.Y[i], 'good_tree');
 		}
 		this.Y = [800, 0, 1600, 400, 2000];
-		this.bad_home = this.physics.add.staticGroup();
+		this.good_home = this.physics.add.staticGroup();
 		for(var i=0;i<5;i++){
-			this.bad_home.create(i*400, this.Y[i], 'bad_home');
+			this.good_home.create(i*400, this.Y[i], 'good_home');
 		}
 		this.Y = [0, 800, 400, 1600, 2000, 1200];
-		this.bad_park = this.physics.add.staticGroup();
+		this.good_park = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_park.create(i*400, this.Y[i], 'bad_park');
+			this.good_park.create(i*400, this.Y[i], 'good_park');
 		}
 		this.Y = [2000, 1600, 0, 1200, 400, 800];
-		this.bad_pool = this.physics.add.staticGroup();
+		this.good_pool = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_pool.create(i*400, this.Y[i], 'bad_pool');
+			this.good_pool.create(i*400, this.Y[i], 'good_pool');
 		}
 	}
 
@@ -156,10 +155,5 @@ class presentWorld extends Scene{
 			this.player.anims.play('turn');
 		}
 	}
-
-	pastWorld (player, museum)
-	{
-		this.scene.start("past");		
-	}
 }
-export default presentWorld
+export default pastWorld

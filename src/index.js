@@ -1,5 +1,6 @@
 import 'phaser';
 import presentWorld from "./presentWorld"
+import pastWorld from "./pastWorld"
 import maze from "./maze"
 
 var config = {
@@ -16,7 +17,7 @@ var config = {
     scene: [{
         preload: preload,
         create: create
-    }, presentWorld, maze],
+    }, presentWorld, maze, pastWorld],
 };
 
 var game = new Phaser.Game(config);
