@@ -41,6 +41,8 @@ class pastWorld extends Scene{
 		this.physics.add.collider(this.player, this.good_home);
 		this.physics.add.collider(this.player, this.good_park);
 		this.physics.add.collider(this.player, this.good_pool);
+		this.physics.add.collider(this.player, this.museum);
+
 
 		// Initial narrative text
 		this.storyText = this.add.text(100, 500, 'Lila fears the world will no longer be green.\
