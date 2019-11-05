@@ -41,15 +41,10 @@ class presentWorld extends Scene{
 		this.physics.add.collider(this.player, this.bad_home);
 		this.physics.add.collider(this.player, this.bad_park);
 		this.physics.add.collider(this.player, this.bad_pool);
-    	this.physics.add.overlap(this.player, this.museum, this.pastWorld, null, this);
+    	this.physics.add.overlap(this.player, this.museum, this.goToPastWorld, null, this);
 
 		// Initial narrative text
-		this.storyText = this.add.text(100, 500, 'Lila fears the world will no longer be green.\
-		 The war has changed everything.\n A gloominess is wrapped around the atmosphere.\n \
-		 Everyone is in their homes and there is a \n general lack of freedom. \
-		 Lila \nis not happy with the current situation and she \n wishes to change it and \
-		 hence she goes out exploring the world.\n', { fontSize: '32px', fill: '#0D3107' });
-		setTimeout(() => {this.storyText.visible = false;}, 10000);
+		
 	}
 
 	createGround(){
@@ -157,8 +152,9 @@ class presentWorld extends Scene{
 		}
 	}
 
-	pastWorld (player, museum)
+	goToPastWorld (player, museum)
 	{
+		this.scene.pause("present");
 		this.scene.start("past");		
 	}
 }

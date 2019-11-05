@@ -17,7 +17,10 @@ var config = {
     scene: [{
         preload: preload,
         create: create
-    }, presentWorld, maze, pastWorld],
+    }, 
+    presentWorld, 
+    pastWorld, 
+    maze],
 };
 
 var game = new Phaser.Game(config);

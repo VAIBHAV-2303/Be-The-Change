@@ -38,19 +38,16 @@ class pastWorld extends Scene{
 		this.physics.add.collider(this.player, this.good_building);
 		this.physics.add.collider(this.player, this.good_building2);
 		this.physics.add.collider(this.player, this.good_tree);
-		this.physics.add.collider(this.player, this.good_home);
+		// this.physics.add.collider(this.player, this.good_home);
 		this.physics.add.collider(this.player, this.good_park);
 		this.physics.add.collider(this.player, this.good_pool);
-		this.physics.add.collider(this.player, this.museum);
-
-
-		// Initial narrative text
-		this.storyText = this.add.text(100, 500, 'Lila fears the world will no longer be green.\
-		 The war has changed everything.\n A gloominess is wrapped around the atmosphere.\n \
-		 Everyone is in their homes and there is a \n general lack of freedom. \
-		 Lila \nis not happy with the current situation and she \n wishes to change it and \
-		 hence she goes out exploring the world.\n', { fontSize: '32px', fill: '#0D3107' });
-		setTimeout(() => {this.storyText.visible = false;}, 10000);
+		
+		// Adding overlap
+		this.physics.add.overlap(this.player, this.museum, this.goToPresentWorld, null, this);
+		var classVar = this;
+		this.good_home.children.iterate((child) => {
+			classVar.physics.add.overlap(classVar.player, child, classVar.goToMaze, null, this);
+		});
 	}
 
 	createGround(){
@@ -97,7 +94,7 @@ class pastWorld extends Scene{
 	}
 
 	createPlayer(){
-		this.player = this.physics.add.sprite(400, 600, 'lila');
+		this.player = this.physics.add.sprite(1600, 1050, 'lila');
 		this.player.setBounce(0.2);
 		this.player.setCollideWorldBounds(true);
 
@@ -156,6 +153,14 @@ class pastWorld extends Scene{
 			this.player.setVelocityY(0);
 			this.player.anims.play('turn');
 		}
+	}
+
+	goToPresentWorld (player, museum){
+		this.scene.start("present");		
+	}
+
+	goToMaze (player, home){
+		this.scene.start("maze");		
 	}
 }
 export default pastWorld
