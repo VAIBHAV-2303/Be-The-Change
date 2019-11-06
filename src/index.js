@@ -11,7 +11,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false
+            debug: true
         }
     },
     scene: [{
@@ -28,14 +28,25 @@ var game = new Phaser.Game(config);
 function preload ()
 {
     this.load.image('logo', 'assets/logo.png');
+    this.load.image('play', 'assets/play.png');
 }
 
 function create ()
 {
     var logo = this.add.image(400, 150, 'logo');
-    this.input.on('pointerdown', () => {
-        this.scene.start('present', {x: 400, y: 600});
-    })
+
+    var sprite = this.add.sprite(900, 300, 'play').setInteractive();
+    sprite.on('pointerover', function (event) {
+        this.setTint(0xff0fff);
+    });
+    sprite.on('pointerout', function (event) {
+        this.clearTint();
+    });
+    sprite.on('pointerdown', function (event) {
+        game.scene.start("present", {x: 400, y: 600});
+        game.scene.stop("default");
+    });
+
     this.tweens.add({
         targets: logo,
         y: 450,

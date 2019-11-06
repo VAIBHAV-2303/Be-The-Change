@@ -22,6 +22,7 @@ class presentWorld extends Scene{
 		this.load.image("bad_pool", "assets/bad_pool.png");
 		this.load.image("bad_tree", "assets/bad_tree.png");
 		this.load.spritesheet('lila', 'assets/lila.png', { frameWidth: 64, frameHeight: 64});
+		this.load.audio('bad_music', ['assets/bad_music.mp3']);
 	}
 
 	create ()
@@ -46,6 +47,10 @@ class presentWorld extends Scene{
 		this.physics.add.collider(this.player, this.bad_park);
 		this.physics.add.collider(this.player, this.bad_pool);
     	this.physics.add.overlap(this.player, this.museum, this.goToPastWorld, null, this);
+
+    	// Playing music
+    	this.music = this.sound.add('bad_music');
+	    this.music.play();
 
     	//message box
 
@@ -167,7 +172,8 @@ class presentWorld extends Scene{
 
 	goToPastWorld (player, museum)
 	{
-		this.scene.start("past", {x: 1600, y:1000})
+		this.scene.start("past", {x: 1600, y:1000});
+		this.music.stop();
 		this.scene.stop("present");
 	}
 }

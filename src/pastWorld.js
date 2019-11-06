@@ -22,7 +22,9 @@ class pastWorld extends Scene{
 		this.load.image("good_park", "assets/good_park.png");
 		this.load.image("good_pool", "assets/good_pool.png");
 		this.load.image("good_tree", "assets/good_tree.png");
+		this.load.image("guard", "assets/guard.png");
 		this.load.spritesheet('lila', 'assets/lila.png', { frameWidth: 64, frameHeight: 64});
+		this.load.audio('good_music', ['assets/good_music.mp3']);
 	}
 
 	create ()
@@ -32,6 +34,7 @@ class pastWorld extends Scene{
 		this.createMuseum();
 		this.createObjects();
 		this.createPlayer();
+		this.createLevel1();
 		
 		// Adjusting camera so that it follows the player
 		this.cameras.main.x = -500;
@@ -43,16 +46,29 @@ class pastWorld extends Scene{
 		this.physics.add.collider(this.player, this.good_building);
 		this.physics.add.collider(this.player, this.good_building2);
 		this.physics.add.collider(this.player, this.good_tree);
-		// this.physics.add.collider(this.player, this.good_home);
+		this.physics.add.collider(this.player, this.good_home);
 		this.physics.add.collider(this.player, this.good_park);
 		this.physics.add.collider(this.player, this.good_pool);
+		this.physics.add.collider(this.player, this.guards);
 		
 		// Adding overlap
 		this.physics.add.overlap(this.player, this.museum, this.goToPresentWorld, null, this);
-		var classVar = this;
-		this.good_home.children.iterate((child) => {
-			classVar.physics.add.overlap(classVar.player, child, classVar.goToMaze, null, this);
-		});
+		this.physics.add.overlap(this.player, this.level1, this.goToMaze, null, this);
+
+		// Playing music
+    	this.music = this.sound.add('good_music');
+	    this.music.play();
+	}
+
+	createLevel1(){
+		this.level1 = this.physics.add.staticGroup();
+		this.level1.create(800, 800, 'good_building');
+
+		this.guards = this.physics.add.staticGroup();
+		this.guards.create(700, 700, 'guard');
+		this.guards.create(700, 900, 'guard');
+		this.guards.create(900, 700, 'guard');
+		this.guards.create(900, 900, 'guard');
 	}
 
 	createGround(){
@@ -69,7 +85,9 @@ class pastWorld extends Scene{
 		this.Y = [400, 1200, 800, 2000, 1600, 0];
 		this.good_building = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.good_building.create(i*400, this.Y[i], 'good_building');
+			if(i!=2){
+				this.good_building.create(i*400, this.Y[i], 'good_building');
+			}
 		}
 		this.Y = [1200, 400, 2000, 800, 0, 1600];
 		this.good_building2 = this.physics.add.staticGroup();
@@ -162,12 +180,14 @@ class pastWorld extends Scene{
 
 	goToPresentWorld (player, museum){
 		this.scene.start("present", {x: 1600, y:1000})
+		this.music.stop();
 		this.scene.stop("past");
 	}
 
 	goToMaze (player, home){
-		this.scene.start("maze");		
-		this.scene.pause();
+		this.scene.start("maze");
+		this.music.stop();	
+		this.scene.stop("past");
 	}
 }
 export default pastWorld
