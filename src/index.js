@@ -34,7 +34,7 @@ function create ()
 {
     var logo = this.add.image(400, 150, 'logo');
     this.input.on('pointerdown', () => {
-        this.scene.start('present');
+        this.scene.start('present', {x: 400, y: 600});
     })
     this.tweens.add({
         targets: logo,

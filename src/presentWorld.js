@@ -7,6 +7,10 @@ class presentWorld extends Scene{
 		this.speed = 250;
 	}
 
+	init(data){
+    	this.data = data;
+    }
+
 	preload ()
 	{
 		this.load.image('bad_ground', 'assets/bad_ground.jpg');
@@ -43,9 +47,18 @@ class presentWorld extends Scene{
 		this.physics.add.collider(this.player, this.bad_pool);
     	this.physics.add.overlap(this.player, this.museum, this.goToPastWorld, null, this);
 
+    	//message box
+
+
 		// Initial narrative text
 		
 	}
+
+	messageBox(){
+		this.showMessageBox("Vaibhav is pain in the ass.")
+	}
+
+
 
 	createGround(){
 		this.bad_ground = this.physics.add.staticGroup();
@@ -91,7 +104,7 @@ class presentWorld extends Scene{
 	}
 
 	createPlayer(){
-		this.player = this.physics.add.sprite(400, 600, 'lila');
+		this.player = this.physics.add.sprite(this.data.x, this.data.y, 'lila');
 		this.player.setBounce(0.2);
 		this.player.setCollideWorldBounds(true);
 
@@ -154,8 +167,8 @@ class presentWorld extends Scene{
 
 	goToPastWorld (player, museum)
 	{
-		this.scene.pause("present");
-		this.scene.start("past");		
+		this.scene.start("past", {x: 1600, y:1000})
+		this.scene.stop("present");
 	}
 }
 export default presentWorld

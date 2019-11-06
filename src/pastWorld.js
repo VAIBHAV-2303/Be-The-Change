@@ -7,6 +7,11 @@ class pastWorld extends Scene{
 		this.speed = 250;
 	}
 
+	init(data)
+    {
+    	this.data = data;
+    }
+
 	preload ()
 	{
 		this.load.image('good_ground', 'assets/good_ground.jpg');
@@ -94,7 +99,7 @@ class pastWorld extends Scene{
 	}
 
 	createPlayer(){
-		this.player = this.physics.add.sprite(1600, 1050, 'lila');
+		this.player = this.physics.add.sprite(this.data.x, this.data.y, 'lila');
 		this.player.setBounce(0.2);
 		this.player.setCollideWorldBounds(true);
 
@@ -156,11 +161,13 @@ class pastWorld extends Scene{
 	}
 
 	goToPresentWorld (player, museum){
-		this.scene.start("present");		
+		this.scene.start("present", {x: 1600, y:1000})
+		this.scene.stop("past");
 	}
 
 	goToMaze (player, home){
 		this.scene.start("maze");		
+		this.scene.pause();
 	}
 }
 export default pastWorld
