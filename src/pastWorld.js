@@ -1,4 +1,5 @@
 import {Scene} from "phaser"
+import 'phaser';
 
 class pastWorld extends Scene{
 	
@@ -54,10 +55,15 @@ class pastWorld extends Scene{
 		// Adding overlap
 		this.physics.add.overlap(this.player, this.museum, this.goToPresentWorld, null, this);
 		this.physics.add.overlap(this.player, this.level1, this.goToMaze, null, this);
+	
+		// Collsion function call
+		this.player.body.onCollide = new Phaser.Signal();
+    	this.player.body.onCollide.add(this.scold, this);
+	}
 
-		// Playing music
-    	this.music = this.sound.add('good_music');
-	    this.music.play();
+	scold (player, guard) {
+    	this.scene.start('textBox', {s: 'Guard: You\'re not supposed to be here.\n Seems like Lila need to find another way in'});
+		setTimeout(() => {this.scene.stop('textBox');}, 5000);
 	}
 
 	createLevel1(){
@@ -65,9 +71,7 @@ class pastWorld extends Scene{
 		this.level1.create(800, 800, 'good_building');
 
 		this.guards = this.physics.add.staticGroup();
-		this.guards.create(700, 700, 'guard');
 		this.guards.create(700, 900, 'guard');
-		this.guards.create(900, 700, 'guard');
 		this.guards.create(900, 900, 'guard');
 	}
 
@@ -179,15 +183,42 @@ class pastWorld extends Scene{
 	}
 
 	goToPresentWorld (player, museum){
-		this.scene.start("present", {x: 1600, y:1000})
-		this.music.stop();
 		this.scene.stop("past");
+		if(this.data.lc<3){
+			this.scene.start('textBox', {s: 'I haven\'t done enough!'});
+			setTimeout(() => {
+				this.scene.stop('textBox');
+				this.scene.start("present", {x: 1600, 
+										  y: 1000, 
+										  lc: this.data.lc, 
+										  firstTime: 1});
+			}, 5000);
+		}
+		else{
+			this.scene.start('textBox', {s: 'Something is different'});
+			setTimeout(() => {
+				this.scene.stop('textBox');
+				this.scene.start("present", {x: 1600, 
+										  y: 1000, 
+										  lc: this.data.lc, 
+										  firstTime: 1});
+			}, 5000);
+		}
 	}
 
 	goToMaze (player, home){
-		this.scene.start("maze");
-		this.music.stop();	
-		this.scene.stop("past");
+		if(this.data.lc==0){
+			this.scene.stop("past");
+			this.scene.start('textBox', {s: 'Lila needs to make the correct choice, before they make the wrong one'});
+			setTimeout(() => {
+				this.scene.stop('textBox');
+				this.scene.start("maze");
+			}, 10000);
+		}
+		else{
+			this.scene.start('textBox', {s: 'Lila\'s job here is done'});
+			setTimeout(() => {this.scene.stop('textBox');}, 10000);
+		}
 	}
 }
 export default pastWorld

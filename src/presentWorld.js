@@ -1,4 +1,5 @@
 import {Scene} from "phaser"
+import Demo from "./box"
 
 class presentWorld extends Scene{
 	
@@ -50,20 +51,8 @@ class presentWorld extends Scene{
 
     	// Playing music
     	this.music = this.sound.add('bad_music');
-	    this.music.play();
-
-    	//message box
-
-
-		// Initial narrative text
-		
+	    this.music.play();		
 	}
-
-	messageBox(){
-		this.showMessageBox("Vaibhav is pain in the ass.")
-	}
-
-
 
 	createGround(){
 		this.bad_ground = this.physics.add.staticGroup();
@@ -172,9 +161,23 @@ class presentWorld extends Scene{
 
 	goToPastWorld (player, museum)
 	{
-		this.scene.start("past", {x: 1600, y:1000});
-		this.music.stop();
 		this.scene.stop("present");
+		if(this.data.firstTime==0){
+			this.scene.start('textBox', {s: 'What?! A working time machine, it seems Lila has travelled back in time, to a time before the war.'});
+			setTimeout(() => {
+				this.scene.stop('textBox');
+				this.scene.start("past", {x: 1600, 
+										  y: 1000, 
+										  lc: this.data.lc, 
+										  firstTime: 1});
+			}, 10000);
+		}
+		else{
+			this.scene.start("past", {x: 1600, 
+									  y: 1000, 
+									  lc: 0, 
+									  firstTime: 1});
+		}
 	}
 }
 export default presentWorld
