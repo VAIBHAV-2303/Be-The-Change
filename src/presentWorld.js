@@ -22,8 +22,8 @@ class presentWorld extends Scene{
 		this.load.image("bad_park", "assets/bad_park.png");
 		this.load.image("bad_pool", "assets/bad_pool.png");
 		this.load.image("bad_tree", "assets/bad_tree.png");
+		this.load.image("good_home", "assets/good_home.png");
 		this.load.spritesheet('lila', 'assets/lila.png', { frameWidth: 64, frameHeight: 64});
-		this.load.audio('bad_music', ['assets/bad_music.mp3']);
 	}
 
 	create ()
@@ -33,6 +33,7 @@ class presentWorld extends Scene{
 		this.createMuseum();
 		this.createObjects();
 		this.createPlayer();
+		this.createGrandpaHome();
 		
 		// Adjusting camera so that it follows the player
 		this.cameras.main.x = -500;
@@ -47,11 +48,52 @@ class presentWorld extends Scene{
 		this.physics.add.collider(this.player, this.bad_home);
 		this.physics.add.collider(this.player, this.bad_park);
 		this.physics.add.collider(this.player, this.bad_pool);
-    	this.physics.add.overlap(this.player, this.museum, this.goToPastWorld, null, this);
 
-    	// Playing music
-    	this.music = this.sound.add('bad_music');
-	    this.music.play();		
+		// Overlap functions
+    	this.physics.add.overlap(this.player, this.museum, this.goToPastWorld, null, this);
+    	this.physics.add.overlap(this.player, this.grandpaHome, this.talk, null, this);	
+	}
+
+	talk(){
+		this.scene.stop('present');
+		if(this.data.presentConverse==0){
+			this.scene.start('textBox', {s: 'Lyla: Grandpa!\
+										\nGrandpa: Ahhh! its been long.\
+										\nLyla: You know why I came here.\
+										\nGrandpa: Let me guess, you hate school?\
+										\nLyla: Not just school, I hate it here! Its not like your childhood. Your stories were different\n, happier!\
+										\nGrandpa: Its the war, Everything has changed, it ...\
+										\nLyla: Well, I want to change it.\
+										\nGrandpa: Wouldn\'t that be amazing, but if only it was that easy.\
+										\nLyla: If I could just go back and change a few things, set Everything on the right path.\
+										\nGrandpa: Take this card, you\'ll know when to meet me next.'});
+			setTimeout(() => {
+				this.scene.stop('textBox');
+				this.scene.start("present", {x: 2000, 
+										  y: 1400, 
+										  lc: 0, 
+										  firstTime: 0,
+										  presentConverse: 1,
+										  pastConverse: 0});
+			}, 35000);
+		}
+		else{
+			this.scene.start('textBox', {s: 'Lyla knows exactly what she needs to know.'});
+			setTimeout(() => {
+				this.scene.stop('textBox');
+				this.scene.start("present", {x: 2000, 
+										  y: 1400, 
+										  lc: 0, 
+										  firstTime: this.data.firstTime,
+										  presentConverse: 1,
+										  pastConverse: this.data.pastConverse});
+			}, 3000);
+		}
+	}
+
+	createGrandpaHome(){
+		this.grandpaHome = this.physics.add.staticGroup();
+		this.grandpaHome.create(2000, 1600, 'good_home');
 	}
 
 	createGround(){
@@ -73,7 +115,9 @@ class presentWorld extends Scene{
 		this.Y = [1200, 400, 2000, 800, 0, 1600];
 		this.bad_building2 = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.bad_building2.create(i*400, this.Y[i], 'bad_building2');
+			if(i!=5){
+				this.bad_building2.create(i*400, this.Y[i], 'bad_building2');
+			}
 		}
 		this.Y = [1600, 2000, 1200, 0, 800, 400];
 		this.bad_tree = this.physics.add.staticGroup();
@@ -162,21 +206,35 @@ class presentWorld extends Scene{
 	goToPastWorld (player, museum)
 	{
 		this.scene.stop("present");
-		if(this.data.firstTime==0){
-			this.scene.start('textBox', {s: 'What?! A working time machine, it seems Lila has travelled back in time, to a time before the war.'});
-			setTimeout(() => {
-				this.scene.stop('textBox');
+		if(this.data.presentConverse==1){
+			if(this.data.firstTime==0){
+				this.scene.start('textBox', {s: 'What?! A working time machine, it seems Lyla has travelled back in time, to a time before the war.'});
+				setTimeout(() => {
+					this.scene.stop('textBox');
+					this.scene.start("past", {x: 1600, 
+											  y: 1000, 
+											  lc: 0,
+											  pastConverse: 0});
+				}, 6000);
+			}
+			else{
 				this.scene.start("past", {x: 1600, 
 										  y: 1000, 
-										  lc: this.data.lc, 
-										  firstTime: 1});
-			}, 10000);
+										  lc: this.data.lc,
+										  pastConverse: this.data.pastConverse});
+			}
 		}
 		else{
-			this.scene.start("past", {x: 1600, 
-									  y: 1000, 
-									  lc: 0, 
-									  firstTime: 1});
+			this.scene.start('textBox', {s:'Its locked, Lyla needs a card to enter.'});
+			setTimeout(() => {
+				this.scene.stop('textBox');
+				this.scene.start("present", {x: 1600, 
+										  y: 1000, 
+										  lc: 0, 
+										  firstTime: 0,
+										  presentConverse: 0,
+										  pastConverse: 0});
+			}, 3000);
 		}
 	}
 }

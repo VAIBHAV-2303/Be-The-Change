@@ -3,6 +3,7 @@ import presentWorld from "./presentWorld"
 import pastWorld from "./pastWorld"
 import maze from "./maze"
 import Demo from "./box"
+import end from "./End"
 import TextTypingPlugin from '../phaser3-rex-notes-master/plugins/texttyping-plugin.js';
 
 var config = {
@@ -16,10 +17,11 @@ var config = {
 			debug: false
 		}
 	},
-	scene: [{preload:preload, create:create}, Demo,  
-	presentWorld, 
-	pastWorld, 
-	maze],
+	scene: [end, {preload:preload, create:create}, 
+	       Demo,  
+		   presentWorld, 
+		   pastWorld, 
+		   maze],
 	plugins: {
 		global: [{
 			key: 'rexTextTyping',
@@ -48,14 +50,16 @@ function create (){
 	});
 	sprite.on('pointerdown', function (event) {
 		game.scene.stop('default');
-		game.scene.start('textBox', {s: 'Lila fears that the world has gone into darkness, the war has made everything gloomy, she wants to go back to a normal life. The kind that her parents and their parents lived. Can she do something about it?'});
+		game.scene.start('textBox', {s: 'Lyla fears that the world has gone into darkness, the war has made everything gloomy, she wants to go back to a normal life. The kind that her parents and their parents lived. Can she do something about it?\nHer grandpa seems to know a lot about the war.\nShe\'d like to meet him.'});
 		setTimeout(() => {
 			game.scene.stop('textBox');
 			game.scene.start("present", {x: 400, 
 										y: 600, 
 										lc: 0, 
-										firstTime: 0});
-		}, 15000);
+										firstTime: 0,
+										pastConverse: 0,
+										presentConverse: 0});
+		}, 20000);
 	});
 
 	this.tweens.add({
@@ -67,3 +71,10 @@ function create (){
 		loop: -1
 	});
 }
+
+var music = new Audio('../assets/bad_music.mp3');
+music.addEventListener('ended', function() {
+    this.currentTime = 0;
+    this.play();
+}, false);
+music.play();

@@ -14,6 +14,8 @@ class maze extends Scene{
         this.load.image('floor', 'assets/floor.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('groundv', 'assets/platformv.png');
+        this.load.image('drill', 'assets/drill.png');
+        this.load.image('bicycle', 'assets/bicycle.png');
 		this.load.spritesheet('lila', 'assets/lila.png', { frameWidth: 64, frameHeight: 64});        
 		this.load.spritesheet('vill', 'assets/vill.png', { frameWidth: 64, frameHeight: 64});        
     }
@@ -66,12 +68,44 @@ class maze extends Scene{
     
         this.createPlayer();        
         this.createVill();
+        this.bicycle = this.physics.add.staticGroup();
+        this.bicycle.create(610, 50, 'bicycle').setScale(0.1, 0.1).refreshBody();
+        this.drill = this.physics.add.staticGroup();
+        this.drill.create(690, 50, 'drill').setScale(0.15, 0.15).refreshBody();
+
         this.cursors = this.input.keyboard.createCursorKeys();
         
         // Colliders
         this.physics.add.collider(this.player, this.platforms);
         this.physics.add.collider(this.vill, this.platforms);
 		this.physics.add.collider(this.vill, this.player);                        
+    
+        // Overlap function
+        this.physics.add.overlap(this.player, this.bicycle, this.goodJob, null, this);
+        this.physics.add.overlap(this.player, this.drill, this.badJob, null, this);
+        this.physics.add.overlap(this.vill, this.drill, this.badJob, null, this);
+    }
+
+    goodJob(){
+        this.scene.stop("maze");
+        this.scene.start('textBox', {s: 'Seems like Lila just got a new access card.'});
+        setTimeout(() => {
+            this.scene.stop('textBox');
+            this.scene.start("past", {x: 800, 
+                                      y: 1000, 
+                                      lc: 1});
+        }, 5000);
+    }
+
+    badJob(){
+        this.scene.stop("maze");
+        this.scene.start('textBox', {s: 'The hardest choices require the strongest will.'});
+        setTimeout(() => {
+            this.scene.stop('textBox');
+            this.scene.start("past", {x: 800, 
+                                      y: 1000, 
+                                      lc: 0});
+        }, 5000);   
     }
 
     createPlayer(){
@@ -114,7 +148,7 @@ class maze extends Scene{
 
     createVill(){
         this.vill = this.physics.add.sprite(160, 700, 'vill');
-        this.vill.setScale(0.6, 0.6);
+        this.vill.setScale(0.55, 0.55);
         this.vill.setBounce(0.2);
         this.vill.setCollideWorldBounds(true);
 
@@ -163,11 +197,11 @@ class maze extends Scene{
     }
 
     villMoveUp(){
-        this.vill.setVelocityY(-0.9*this.speed);
+        this.vill.setVelocityY(-0.7*this.speed);
     }
 
     villMoveRight(){
-        this.vill.setVelocityX(0.9*this.speed);
+        this.vill.setVelocityX(0.7*this.speed);
     }
 
     villMove(){
