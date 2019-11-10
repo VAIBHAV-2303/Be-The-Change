@@ -21,11 +21,11 @@ class miniGame extends Scene{
 		// Placing objects of the game
 		this.add.image(1100, 0, 'sky');
 		this.laptop = this.physics.add.staticGroup();
-		this.laptop.create(2000, 980, "laptop").setScale(0.1, 0.1).refreshBody();
+		this.laptop.create(1900, 990, "laptop").setScale(0.15, 0.15).refreshBody();
 
 		this.platforms = this.physics.add.staticGroup();
 		// this.platforms.create(2000, 1080, 'ground').setScale(0.1, 0.5).refreshBody();
-		this.platforms.create(85, 1800, 'ground').setScale(20, 4).refreshBody();
+		this.platforms.create(85, 1900, 'ground').setScale(20, 10).refreshBody();
 
 		this.platforms.create(700, 1650, 'ground').setScale(1, 1).refreshBody();
 		this.platforms.create(100, 1550, 'ground').setScale(1, 1).refreshBody();
@@ -41,8 +41,6 @@ class miniGame extends Scene{
 
 		this.platforms.create(2550, 1050, 'ground').setScale(7, 1).refreshBody();
 
-		// this.platforms.create(35, 950, 'ground').setScale(1, 1).refreshBody();
-		// this.platforms.create(35, 1550, 'ground').setScale(1, 1).refreshBody();
 		this.platforms.create(1505, 1650, 'ground').setScale(1, 1).refreshBody();
 
 
@@ -59,10 +57,25 @@ class miniGame extends Scene{
 		// Adding colliders
 		this.physics.add.collider(this.player, this.platforms);
 		this.physics.add.collider(this.p21, this.platforms);	
-		this.physics.add.collider(this.p22, this.platforms);	
-		this.physics.add.collider(this.p23, this.platforms);	
-		this.physics.add.collider(this.p24, this.platforms);	
+		this.physics.add.collider(this.p22, this.platforms);		
+		this.physics.add.collider(this.p24, this.platforms);
 
+		// Adding overlap
+		this.physics.add.overlap(this.player, this.laptop, this.finish, null, this);
+	}
+
+	finish(){
+		this.scene.stop('miniGame');
+		this.scene.start('textBox', {s: 'Here is the report Grandpa has been looking for.\
+										 \nI\'ll mail it to him.\
+										 \nDid something really change?'});
+		setTimeout(() => {
+			this.scene.stop('textBox');
+			this.scene.start("past", {x: 800, 
+										y: 600, 
+										lc: 2,
+										pastConverse: 1});
+		}, 10000);
 	}
 
 	createPlayer(){
@@ -102,11 +115,6 @@ class miniGame extends Scene{
 		this.p22.setCollideWorldBounds(true);
 		this.p22.setGravityY(600);
 
-		this.p23 = this.physics.add.sprite(1500, 1300, 'p2');
-		this.p23.setBounce(0.2);
-		this.p23.setCollideWorldBounds(true);
-		this.p23.setGravityY(600);
-
 		this.p24 = this.physics.add.sprite(205, 1050, 'p2');
 		this.p24.setBounce(0.2);
 		this.p24.setCollideWorldBounds(true);
@@ -114,7 +122,6 @@ class miniGame extends Scene{
 		
 		this.p21.setVelocityX(80);
 		this.p22.setVelocityX(125);
-		this.p23.setVelocityX(125);
 		this.p24.setVelocityX(80);
 
 
@@ -139,7 +146,6 @@ class miniGame extends Scene{
 
 		this.p21.anims.play("p2right", true);
 		this.p22.anims.play("p2right", true);
-		this.p23.anims.play("p2right", true);
 		this.p24.anims.play("p2right", true);
 
 	}
@@ -191,17 +197,6 @@ class miniGame extends Scene{
 
 		}
 
-		if(this.p23.x >= 1680)
-		{
-			this.p23.setVelocityX(-85);
-			this.p23.anims.play("p2left", true);
-		}
-		if(this.p23.x <= 1410)
-		{
-			this.p23.setVelocityX(85);
-			this.p23.anims.play("p2right", true);
-		}
-
 		if(this.p24.x >= 280)
 		{
 			this.p24.setVelocityX(-45);
@@ -217,39 +212,42 @@ class miniGame extends Scene{
 	{
 		if(this.p21.body.velocity.x>0 && this.player.x >= this.p21.x && this.player.y == this.p21.y)
 		{
-			console.log("fucked");
+			this.outFn();
 		}
 		if(this.p21.body.velocity.x<0 && this.player.x <= this.p21.x && this.player.y == this.p21.y)
 		{
-			console.log("fucked");
+			this.outFn();
 		}
 
 		if(this.p22.body.velocity.x>0 && this.player.x >= this.p22.x && this.player.y == this.p22.y)
 		{
-			console.log("fucked");
+			this.outFn();
 		}
 		if(this.p22.body.velocity.x<0 && this.player.x <= this.p22.x && this.player.y == this.p22.y)
 		{
-			console.log("fucked");
-		}
-
-		if(this.p23.body.velocity.x>0 && this.player.x >= this.p23.x && this.player.y == this.p23.y)
-		{
-			console.log("fucked");
-		}
-		if(this.p23.body.velocity.x<0 && this.player.x <= this.p23.x && this.player.y == this.p23.y)
-		{
-			console.log("fucked");
+			this.outFn();
 		}
 
 		if(this.p24.body.velocity.x>0 && this.player.x >= this.p24.x && this.player.y == this.p24.y)
 		{
-			console.log("fucked");
+			this.outFn();
 		}
 		if(this.p24.body.velocity.x<0 && this.player.x <= this.p24.x && this.player.y == this.p24.y)
 		{
-			console.log("fucked");
+			this.outFn();
 		}
+	}
+
+	outFn(){
+		this.scene.stop('miniGame');
+		this.scene.start('textBox', {s: 'Lyla was never too careful.'});
+		setTimeout(() => {
+			this.scene.stop('textBox');
+			this.scene.start("past", {x: 800, 
+										y: 600, 
+										lc: 1,
+										pastConverse: 1});
+		}, 5000);
 	}
 }
 export default miniGame

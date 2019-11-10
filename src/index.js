@@ -5,7 +5,8 @@ import maze from "./maze"
 import Demo from "./box"
 import end from "./End"
 import miniGame from "./mini_game"
-import TextTypingPlugin from '../phaser3-rex-notes-master/plugins/texttyping-plugin.js';
+import level2 from "./level2"
+import TextTypingPlugin from '../phaser3-rex-notes-master/plugins/texttyping-plugin.js'
 
 var config = {
 	type: Phaser.AUTO,
@@ -18,11 +19,14 @@ var config = {
 			debug: false
 		}
 	},
-	scene: [miniGame, {preload:preload, create:create}, 
+	scene: [{preload:preload, create:create}, 
 	       Demo,  
 		   presentWorld, 
 		   pastWorld, 
-		   maze, end],
+		   maze, 
+		   end, 
+		   level2,
+		   miniGame],
 	plugins: {
 		global: [{
 			key: 'rexTextTyping',
@@ -50,7 +54,7 @@ function create (){
 		this.clearTint();
 	});
 	sprite.on('pointerdown', function (event) {
-		game.scene.stop('miniGame');
+		game.scene.stop('default');
 		game.scene.start('textBox', {s: 'Lyla fears that the world has gone into darkness, the war has made everything gloomy, she wants to go back to a normal life. The kind that her parents and their parents lived. Can she do something about it?\nHer grandpa seems to know a lot about the war.\nShe\'d like to meet him.'});
 		setTimeout(() => {
 			game.scene.stop('textBox');

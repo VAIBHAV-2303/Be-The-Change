@@ -83,7 +83,7 @@ class presentWorld extends Scene{
 				this.scene.stop('textBox');
 				this.scene.start("present", {x: 2000, 
 										  y: 1400, 
-										  lc: 0, 
+										  lc: this.data.lc, 
 										  firstTime: this.data.firstTime,
 										  presentConverse: 1,
 										  pastConverse: this.data.pastConverse});
@@ -172,7 +172,7 @@ class presentWorld extends Scene{
 		});
 		this.anims.create({
 			key: 'down',
-			frames: this.anims.generateFrameNumbers('lila', { start: 104, end: 112 }),
+			frames: this.anims.generateFrameNumbers('lila', { start: 130, end: 138 }),
 			frameRate: 10,
 			repeat: -1
 		});
@@ -218,6 +218,7 @@ class presentWorld extends Scene{
 				}, 6000);
 			}
 			else{
+				console.log(this.data.lc);
 				this.scene.start("past", {x: 1600, 
 										  y: 1000, 
 										  lc: this.data.lc,

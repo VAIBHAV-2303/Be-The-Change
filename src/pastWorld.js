@@ -35,7 +35,7 @@ class pastWorld extends Scene{
 		this.createObjects();
 		this.createPlayer();
 		this.createLevel1();
-		// this.createLevel2();
+		this.createLevel2();
 		this.createGrandpaHome();
 		
 		// Adjusting camera so that it follows the player
@@ -66,7 +66,8 @@ class pastWorld extends Scene{
 		// Adding overlap
 		this.physics.add.overlap(this.player, this.museum, this.goToPresentWorld, null, this);
 		this.physics.add.overlap(this.player, this.level1, this.goToMaze, null, this);
-    	this.physics.add.overlap(this.player, this.grandpaHome, this.talk, null, this);	
+		this.physics.add.overlap(this.player, this.level2, this.goToOffice, null, this);		
+		this.physics.add.overlap(this.player, this.grandpaHome, this.talk, null, this);	
 	}
 
 	talk(){
@@ -88,24 +89,26 @@ class pastWorld extends Scene{
 										  y: 1400, 
 										  lc: 0, 
 										  pastConverse: 1});
-			}, 35000);
+			}, 40000);
 		}
-		else if(pastConverse==1){
+		else if(this.data.pastConverse==1){
 			this.scene.start('textBox', {s: 'Grandpa has told me enough.'});
 			setTimeout(() => {
 				this.scene.stop('textBox');
 				this.scene.start("past", {x: 2000, 
 										  y: 1400, 
-										  lc: 0, 
+										  lc: this.data.lc, 
 										  pastConverse: 1});
 			}, 3000);
 		}
 		else{
-			this.scene.start('textBox', {s: ''});
+			this.scene.start('textBox', {s: 'Lyla: You\'re a genius grandpa. We stopped the war.\
+											\nGrandpa: What war are you talking about? Look around you.\
+											\nThe End.'});
 			setTimeout(() => {
 				this.scene.stop('textBox');
 				this.scene.start("end");
-			}, 3000);
+			}, 10000);
 		}
 	}
 
@@ -123,14 +126,13 @@ class pastWorld extends Scene{
 		this.guards.create(850, 900, 'guard');
 	}
 
-	// createLevel2(){
-	// 	this.level2 = this.physics.add.staticGroup();
-	// 	this.level2.create(800, 800, 'good_building');
-
-	// 	this.guards = this.physics.add.staticGroup();
-	// 	this.guards.create(750, 900, 'guard');
-	// 	this.guards.create(850, 900, 'guard');
-	// }
+	createLevel2(){
+		this.level2 = this.physics.add.staticGroup();
+		this.level2.create(800, 400, 'good_building2');
+		
+		this.guards.create(740, 500, 'guard');
+		this.guards.create(860, 500, 'guard');
+	}
 
 	createGround(){
 		this.good_ground = this.physics.add.staticGroup();
@@ -170,7 +172,9 @@ class pastWorld extends Scene{
 		this.Y = [0, 800, 400, 1600, 2000, 1200];
 		this.good_park = this.physics.add.staticGroup();
 		for(var i=0;i<6;i++){
-			this.good_park.create(i*400, this.Y[i], 'good_park');
+			if(i!=2){
+				this.good_park.create(i*400, this.Y[i], 'good_park');
+			}
 		}
 		this.Y = [2000, 1600, 0, 1200, 400, 800];
 		this.good_pool = this.physics.add.staticGroup();
@@ -210,7 +214,7 @@ class pastWorld extends Scene{
 		});
 		this.anims.create({
 			key: 'down',
-			frames: this.anims.generateFrameNumbers('lila', { start: 104, end: 112 }),
+			frames: this.anims.generateFrameNumbers('lila', { start: 130, end: 138 }),
 			frameRate: 10,
 			repeat: -1
 		});
@@ -242,29 +246,34 @@ class pastWorld extends Scene{
 	}
 
 	goToPresentWorld (player, museum){
-		this.scene.stop("past");
-		if(this.data.lc<3){
-			this.scene.start('textBox', {s: 'I haven\'t done enough!'});
-			setTimeout(() => {
-				this.scene.stop('textBox');
-				this.scene.start("present", {x: 1600, 
-										  y: 1000, 
-										  lc: this.data.lc, 
-										  firstTime: 1,
-										  presentConverse: 1,
-										  pastConverse: this.pastConverse});
-			}, 5000);
-		}
-		else{
-			this.scene.start('textBox', {s: 'Something is different\n\
-											 I have stopped the war.'});
-			setTimeout(() => {
-				this.scene.stop('textBox');
-				this.scene.start("past", {x: 1600, 
-										  y: 1000, 
-										  lc: this.data.lc, 
-										  pastConverse: 2});
-			}, 10000);
+		if(this.data.pastConverse!=2){
+			this.scene.stop("past");
+			if(this.data.lc<2){
+				this.scene.start('textBox', {s: 'I haven\'t done enough!'});
+				setTimeout(() => {
+					this.scene.stop('textBox');
+					this.scene.start("present", {x: 1600, 
+											y: 1000, 
+											lc: this.data.lc, 
+											firstTime: 1,
+											presentConverse: 1,
+											pastConverse: this.data.pastConverse});
+				}, 5000);
+			}
+			else{
+				this.scene.start('textBox', {s: 'Something is different\
+												\nI have stopped the war.\
+												\nI must talk to grandpa.'});
+				setTimeout(() => {
+					this.scene.stop('textBox');
+					console.log('pui');
+					this.scene.start("past", {x: 1600, 
+											y: 1000, 
+											lc: this.data.lc, 
+											pastConverse: 2});
+					console.log('Ho start');
+				}, 10000);
+			}
 		}
 	}
 
@@ -272,14 +281,15 @@ class pastWorld extends Scene{
 		this.scene.stop("past");
 		if(this.data.lc==0){
 			if(this.data.pastConverse==1){
-				this.scene.start('textBox', {s: 'Lyla needs to make the correct choice, before they make the wrong one!'});
+				this.scene.start('textBox', {s: 'Lieutenant Singh is going to delay the shipment containig ration for the Allies.\
+												\nLyla needs to make the correct choice, before they make the wrong one!'});
 				setTimeout(() => {
 					this.scene.stop('textBox');
 					this.scene.start("maze");
-				}, 8000);
+				}, 12000);
 			}
 			else{
-				this.scene.start('textBox', {s: 'I should talk to grandpa first'});
+				this.scene.start('textBox', {s: 'I should talk to grandpa first.'});
 				setTimeout(() => {
 					this.scene.stop('textBox');
 					this.scene.start("past", {x: 800, 
@@ -290,11 +300,45 @@ class pastWorld extends Scene{
 			}
 		}
 		else{
-			this.scene.start('textBox', {s: 'Lyla\'s job here is done'});
+			this.scene.start('textBox', {s: 'Lyla\'s job here is done.'});
 			setTimeout(() => {
 				this.scene.stop('textBox');
 				this.scene.start("past", {x: 800, 
 										  y: 1000, 
+										  lc: this.data.lc,
+										  pastConverse: 1});
+			}, 5000);
+		}
+	}
+
+	goToOffice(){
+		this.scene.stop('past');
+		if(this.data.lc<1){
+			this.scene.start('textBox', {s: 'Lyla needs to do something else first.'});
+			setTimeout(() => {
+				this.scene.stop('textBox');
+				this.scene.start("past", {x: 800, 
+										  y: 600, 
+										  lc: this.data.lc,
+										  pastConverse: this.data.pastConverse});
+			}, 5000);
+		}
+		else if(this.data.lc==1){
+			this.scene.start('textBox', {s: 'There could be some intel here. Beware of the guards roaming around,\
+											\nif they see you, you are done.\
+											\nFind the car grandpa sent for you\
+											\nGo gentle into the dark.'});
+			setTimeout(() => {
+				this.scene.stop('textBox');
+				this.scene.start("level2");
+			}, 13000);
+		}
+		else{
+			this.scene.start('textBox', {s: 'Lyla\'s job here is done.'});
+			setTimeout(() => {
+				this.scene.stop('textBox');
+				this.scene.start("past", {x: 800, 
+										  y: 600, 
 										  lc: this.data.lc,
 										  pastConverse: 1});
 			}, 5000);

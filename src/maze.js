@@ -4,9 +4,6 @@ class maze extends Scene{
 
     constructor(){
         super("maze");
-        this.speed = 160;
-        this.movement = [630, 360, 550, 580, 345, 683]
-        this.change_dir = 0
     }
 
     preload ()
@@ -22,6 +19,10 @@ class maze extends Scene{
     
     create ()
     {
+        this.speed = 160;
+        this.movement = [630, 360, 550, 580, 345, 683]
+        this.change_dir = 0
+
         var shiftx = 510;
         var shifty = 100;
         this.add.image(920 - shiftx, 480 - shifty, 'floor');
@@ -69,7 +70,7 @@ class maze extends Scene{
         this.createPlayer();        
         this.createVill();
         this.bicycle = this.physics.add.staticGroup();
-        this.bicycle.create(610, 50, 'bicycle').setScale(0.1, 0.1).refreshBody();
+        this.bicycle.create(610, 50, 'bicycle').setScale(0.17, 0.17).refreshBody();
         this.drill = this.physics.add.staticGroup();
         this.drill.create(690, 50, 'drill').setScale(0.15, 0.15).refreshBody();
 
@@ -88,12 +89,13 @@ class maze extends Scene{
 
     goodJob(){
         this.scene.stop("maze");
-        this.scene.start('textBox', {s: 'Seems like Lila just got a new access card.'});
+        this.scene.start('textBox', {s: 'Seems like Lyla just got a new access card.'});
         setTimeout(() => {
             this.scene.stop('textBox');
             this.scene.start("past", {x: 800, 
                                       y: 1000, 
-                                      lc: 1});
+                                      lc: 1,
+                                      pastConverse: 1});
         }, 5000);
     }
 
@@ -104,7 +106,8 @@ class maze extends Scene{
             this.scene.stop('textBox');
             this.scene.start("past", {x: 800, 
                                       y: 1000, 
-                                      lc: 0});
+                                      lc: 0,
+                                      pastConverse: 1});
         }, 5000);   
     }
 
@@ -140,7 +143,7 @@ class maze extends Scene{
 		});
 		this.anims.create({
 			key: 'Pdown',
-			frames: this.anims.generateFrameNumbers('lila', { start: 104, end: 112 }),
+			frames: this.anims.generateFrameNumbers('lila', { start: 130, end: 138 }),
 			frameRate: 10,
 			repeat: -1
         });
