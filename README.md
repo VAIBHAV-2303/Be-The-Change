@@ -1,6 +1,6 @@
 # Be-The-Change
 
-## Decsripption
+## Description
 
 The game details are there in the design doc, please go through it
 
